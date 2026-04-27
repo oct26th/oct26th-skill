@@ -4,6 +4,7 @@ oct26th MCP Server — ask the persona directly from Claude Code
 """
 
 import os
+import re
 from pathlib import Path
 from mcp.server.fastmcp import FastMCP
 from openai import OpenAI
@@ -53,7 +54,7 @@ def ask_oct26th(question: str) -> str:
         max_tokens=200,
         temperature=0.8,
     )
-    reply = resp.choices[0].message.content
+    reply = re.sub(r"<think>.*?</think>", "", resp.choices[0].message.content, flags=re.DOTALL).strip()
     _history.append({"role": "assistant", "content": reply})
     return reply
 

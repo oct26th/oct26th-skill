@@ -4,6 +4,7 @@ oct26th Telegram Bot — powered by MiniMax M2.7
 """
 
 import os
+import re
 from pathlib import Path
 from openai import OpenAI
 
@@ -56,7 +57,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
             max_tokens=300,
             temperature=0.8,
         )
-        reply = resp.choices[0].message.content
+        reply = re.sub(r"<think>.*?</think>", "", resp.choices[0].message.content, flags=re.DOTALL).strip()
         history.append({"role": "assistant", "content": reply})
         await update.message.reply_text(reply)
     except Exception as e:
