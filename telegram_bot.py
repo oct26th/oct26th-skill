@@ -46,12 +46,16 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     text = update.message.text or ""
     chat_type = update.effective_chat.type
 
-    # In groups, only respond when @mentioned; strip the mention from text
+    # In groups, only respond when @mentioned or replying to the bot
     if chat_type in ("group", "supergroup"):
         bot_username = f"@{context.bot.username}"
-        if bot_username.lower() not in text.lower():
+        is_mention = bot_username.lower() in text.lower()
+        reply_to = update.message.reply_to_message
+        is_reply_to_bot = reply_to and reply_to.from_user and reply_to.from_user.id == context.bot.id
+        if not is_mention and not is_reply_to_bot:
             return
-        text = re.sub(re.escape(bot_username), "", text, flags=re.IGNORECASE).strip()
+        if is_mention:
+            text = re.sub(re.escape(bot_username), "", text, flags=re.IGNORECASE).strip()
         if not text:
             await update.message.reply_text("有什麼事？")
             return
