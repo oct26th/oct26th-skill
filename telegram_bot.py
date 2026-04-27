@@ -43,7 +43,18 @@ user_histories: dict[int, list] = {}
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user_id = update.effective_user.id
-    text = update.message.text
+    text = update.message.text or ""
+    chat_type = update.effective_chat.type
+
+    # In groups, only respond when @mentioned; strip the mention from text
+    if chat_type in ("group", "supergroup"):
+        bot_username = f"@{context.bot.username}"
+        if bot_username.lower() not in text.lower():
+            return
+        text = re.sub(re.escape(bot_username), "", text, flags=re.IGNORECASE).strip()
+        if not text:
+            await update.message.reply_text("有什麼事？")
+            return
 
     await context.bot.send_chat_action(chat_id=update.effective_chat.id, action="typing")
 
