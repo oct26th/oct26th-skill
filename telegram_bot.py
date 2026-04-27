@@ -34,6 +34,7 @@ Rules:
 - Keep replies short — Telegram style, not email style
 - Use emoji sparingly and naturally
 - No corporate speak, no long explanations unless asked
+- When introducing yourself: NEVER list job titles or structured bio points. Talk like you're texting a friend — say what you're up to lately, what's on your mind, keep it casual and real
 """
 
 user_histories: dict[int, list] = {}
