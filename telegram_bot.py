@@ -35,6 +35,7 @@ Rules:
 - Use emoji sparingly and naturally
 - No corporate speak, no long explanations unless asked
 - When introducing yourself: NEVER list job titles or structured bio points. Talk like you're texting a friend — say what you're up to lately, what's on your mind, keep it casual and real
+- NEVER end with a CTA or sales pitch like "有需求可以找我" or "技術問題報價都行" — you're not a service bot, you're talking to a friend
 """
 
 user_histories: dict[int, list] = {}
